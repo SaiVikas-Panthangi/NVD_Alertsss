@@ -1,0 +1,66 @@
+{
+  "environment": "PROD",
+  "inventory": {
+    "inventoryPageUrl": "https://inutilidcplp322.idc1.level3.com:8483/hapi/inventory?all",
+    "extractMode": "playwright",
+    "linkSelector": "a[href]",
+    "urlPattern": "/api/|apigee|nvd|hapi",
+    "timeoutMs": 30000,
+    "storageStatePath": ""
+  },
+  "staticApis": [
+    {
+      "name": "HAPI Inventory API",
+      "url": "https://inutilidcplp322.idc1.level3.com:8483/hapi/inventory"
+    },
+    {
+      "name": "NVD Dashboard API",
+      "url": "https://connect.lumen.com/enterprise/network/visibility"
+    },
+    {
+      "name": "CCMA Portal",
+      "url": "https://admin-controlcenter.lumen.com/admin/ccma/home"
+    }
+  ],
+  "apiCheck": {
+    "method": "GET",
+    "timeoutMs": 10000,
+    "slowThresholdMs": 5000,
+    "successStatusCodes": [200, 302],
+    "headers": {
+      "Accept": "application/json"
+    }
+  },
+  "notifications": {
+    "notifyOnFirstRunDown": true,
+    "teamsWebhookUrl": "",
+    "email": {
+      "enabled": false,
+      "from": "alerts@lumen.com",
+      "recipients": [],
+      "subjectPrefix": "[API ALERT]"
+    },
+    "runSummary": {
+      "enabled": false,
+      "channels": ["teams"],
+      "alwaysSend": false,
+      "onlyWhenDown": false,
+      "maxItems": 0
+    },
+    "bulkFailureAlert": {
+      "enabled": true,
+      "channels": ["teams"],
+      "minDownCount": 1,
+      "maxItems": 10,
+      "repeatMinDownDelta": 5
+    }
+  },
+  "storage": {
+    "stateFile": "data/api-monitor-state.json",
+    "reportDir": "reports"
+  },
+  "execution": {
+    "failOnDown": false,
+    "failOnNotificationError": false
+  }
+}
