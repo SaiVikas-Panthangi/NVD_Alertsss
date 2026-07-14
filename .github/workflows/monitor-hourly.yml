@@ -3,7 +3,8 @@ name: Dashboard Alerts Hourly Monitor
 on:
   workflow_dispatch:
   schedule:
-    # Runs hourly from 09:00 IST to 23:00 IST (GitHub schedule is UTC).
+    # Runs hourly from 09:00 IST to 23:00 IST (GitHub Actions uses UTC)
+    # 09:00 IST = 03:30 UTC, 23:00 IST = 17:30 UTC
     - cron: '30 3-17 * * *'
 
 permissions:
@@ -58,3 +59,13 @@ jobs:
             data/**
             logs/**
           if-no-files-found: warn
+
+      - name: Notify on Failure
+        if: failure()
+        shell: bash
+        run: |
+          FAILURE_MESSAGE='{"text":"🚨 Dashboard Alerts Monitor FAILED\nRun: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"}'
+          curl -X POST "$TEAMS_WEBHOOK_URL" \
+            -H "Content-Type: application/json" \
+            -d "$FAILURE_MESSAGE" \
+            || echo "Failed to send Teams notification"
