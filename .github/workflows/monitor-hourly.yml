@@ -12,7 +12,7 @@ permissions:
 
 concurrency:
   group: dashboard-alerts-hourly-monitor
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 jobs:
   run-monitor:
